@@ -1,44 +1,37 @@
-const { spawn } = require('child_process');
+const { BotAdminToken, LogChannelId, CommandChannelId } = require('./config.json');
 
-const comandos = {
-    proceso1: 'echo "Proceso 1"',
-    proceso2: 'echo "Proceso 2"',
-    proceso3: 'echo "Proceso 3"',
-};
+const { Client, Events, GatewayIntentBits } = require('discord.js');
+const client = new Client({
+    intents: [
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
+});
+const { RunBots, stopBot, RunningBots, BotList } = require('./services/botmanager');
+client.once(Events.ClientReady, c => {
+    console.log(`El bot ${c.user.tag} se ha reiniciado.`);
+    const logs = client.channels.cache.get(LogChannelId)
+    logs.send('# :warning:  El bot se ha reiniciado.')
+    RunBots({ logs });
 
-const procesos = {};
+});
+client.on('messageCreate', async (msg) => {
+    const CommandChannel = client.channels.cache.get(CommandChannelId)
+    const args = msg.content.split(' ');
+    const command = args[0].toLowerCase()
+    const botName = args.slice(1).join(' ');
 
-function ejecutarProcesos(comandos) {
-
-    for (const nombreProceso in comandos) {
-
-        const comando = comandos[nombreProceso];
-        const childProcess = spawn(comando, {
-            shell: true, // Habilita el uso de la shell (Bash)
-        });
-
-        procesos[nombreProceso] = childProcess; // Almacena una referencia al proceso en el objeto
-
-        childProcess.stdout.on('data', (data) => {
-            console.log(`${nombreProceso}: ${data.toString()}`);
-        });
-
-        childProcess.stderr.on('data', (data) => {
-            console.error(`Error en ${nombreProceso}: ${data.toString()}`);
-        });
-
-        childProcess.on('error', (error) => {
-            console.error(`Error al ejecutar ${nombreProceso}: ${error.message}`);
-        });
-
-        childProcess.on('exit', (code, signal) => {
-            console.log(`${nombreProceso} finalizado con código ${code} y señal ${signal}`);
-        });
+    if (msg.author.bot) return;
+    if (!CommandChannel) return;
+    if (BotList.has(botName) || command == 'stop') {
+        stopBot(botName)
     }
-}
-function cerrarProceso(BotName) {
 
-    procesos[BotName].kill();
-}
 
-ejecutarProcesos(comandos);
+
+});
+
+client.login(BotAdminToken);
