@@ -15,7 +15,7 @@ client.once(Events.ClientReady, c => {
     console.log(`El bot ${c.user.tag} se ha reiniciado.`);
     const logs = client.channels.cache.get(LogChannelId)
     logs.send('# :warning:  El bot se ha reiniciado.')
-    RunBots({ logs });
+    RunBots({ logs, BotList });
 
 });
 client.on('messageCreate', async (msg) => {
@@ -26,10 +26,21 @@ client.on('messageCreate', async (msg) => {
 
     if (msg.author.bot) return;
     if (!CommandChannel) return;
-    if (BotList.has(botName) || command == 'stop') {
-        stopBot(botName)
+    if (command == 'stop') {
+        msg.reply(await stopBot(botName))
+
+    }
+    if (command == 'start') {
+
     }
 
+    if (command == 'list') {
+        let lsit = '>>> ##  Lista de bots:\n';
+        BotList.forEach(bot => {
+            lsit += `- **${bot}**\n`;
+        });
+        msg.reply(lsit)
+    }
 
 
 });

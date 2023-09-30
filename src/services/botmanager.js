@@ -12,7 +12,7 @@ for (const folder of commandFolders) {
     BotList.set(folder, BotStart);
 }
 
-async function RunBots({ logs }) {
+async function RunBots({ logs, BotList }) {
     for (const [BotName, command] of BotList.entries()) {
         const childProcess = spawn(command, {
             shell: true,
@@ -55,13 +55,15 @@ async function RunBots({ logs }) {
 }
 
 async function stopBot(BotName) {
+
     if (RunningBots[BotName]) {
         RunningBots[BotName].kill();
         delete RunningBots[BotName];
+        return `:white_check_mark:  Se detuvo el bot ${BotName}.`
     } else {
         console.error(`El bot ${BotName} no está en ejecución.`);
+        return `:exclamation: El bot ${BotName} no está en ejecución.`
     }
 }
-// En el módulo botmanager, al final del archivo
 module.exports = { RunBots, stopBot, RunningBots, BotList };
 
