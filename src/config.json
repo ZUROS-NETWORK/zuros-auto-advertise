@@ -1,6 +1,6 @@
 {
-  "BotAdminToken": "OTTM4OOrHjmgGLDHVLYk",
-  "NodeMode": "nodemon",
-  "LogChannelId": "1156981554569039905",
-  "CommandChannelId": "1157232536326504518"
+  "BotAdminToken": "regular discord bot token to manage self-bots",
+  "NodeMode": "node",
+  "LogChannelId": "self-bot log channel id needs a discord server",
+  "CommandChannelId": "control command channel id"
 }
