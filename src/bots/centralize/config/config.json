@@ -1,7 +1,8 @@
 {
-    "Token": "MTE1Njk1Nzv2RENd4yOx5oSei9xh610",
-    "ChannelsId": ["1156974535690686556", "664838240100155412"],
+    "Token": "self bot token",
+    "ChannelsId": ["id of the channels where messages can be sent2"],
+    "TimeToSendMsg": ["1", "20"],
+    "MinMsgSend": ["2", "4"],
     "ServerId": "602846456096751645"
-
-  }
+}
   
