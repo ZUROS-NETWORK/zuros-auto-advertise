@@ -1,32 +1,31 @@
-let minutes;
 const { advertising } = require('../../config/messages.json')
-const { ChannelsId, TimeToSendMsg, MinMsgSend } = require('../../config/config.json');
-let msgCount = MinMsgSend[0];
+const { ChannelsId, TimeToSendMsg, MinMsgSend, TypingSec } = require('../../config/config.json');
+
+let msgCount = MinMsgSend.min;
+let minutes;
+
 async function inviter({ client }) {
-    const channelJava = await client.channels.cache.get(ChannelsId[0])
-    const channelBedrock = await client.channels.cache.get(ChannelsId[1])
     client.on('message', async message => {
-
-
-
-        if (message.channel.id !== channelJava.id) return;
-        if (message.author.id == client.user.id) return;
-        if (msgCount) {
-            msgCount--
-            console.log(`${msgCount}`)
+        try {
+            if (!ChannelsId.includes(message.channel.id)) return;
+            if (message.author.id == client.user.id) return;
+            if (msgCount) {
+                msgCount--
+            }
+            console.log(
+                `Mensajes retantes ${msgCount}\n` +
+                `Minutos retantes ${minutes}`)
+            if (minutes || msgCount) return
+            msgCount = 8
+            minutes = 2
+            await message.channel.sendTyping();
+            await new Promise(resolve => setTimeout(resolve, TypingSec));
+            await message.channel.send(advertising[randomNum(0, advertising.length - 1)])
+            msgCount = randomNum(MinMsgSend.min, MinMsgSend.max)
+            timer(randomNum(TimeToSendMsg.min, TimeToSendMsg.max))
+        } catch (error) {
+            console.error('Error en la función inviter:', error);
         }
-
-
-        if (minutes || msgCount) return
-
-        msgCount = randomNum(MinMsgSend[0], MinMsgSend[1])
-        minutes = 2
-        await message.channel.sendTyping();
-
-        await new Promise(resolve => setTimeout(resolve, 9000));
-        await channelJava.send(await advertising[randomNum(0, advertising.length - 1)])
-
-        timer(randomNum(TimeToSendMsg[0], TimeToSendMsg[1]))
     });
 
 }
