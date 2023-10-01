@@ -1,5 +1,5 @@
 let minutes;
-let msgCount = MinMsgSend[1];
+let msgCount = MinMsgSend[0];
 const { advertising } = require('../../config/messages.json')
 const { ChannelsId, TimeToSendMsg, MinMsgSend } = require('../../config/config.json');
 async function inviter({ client }) {
@@ -19,14 +19,14 @@ async function inviter({ client }) {
 
         if (minutes || msgCount) return
 
-        msgCount = randomNum(MinMsgSend[1], MinMsgSend[2])
+        msgCount = randomNum(MinMsgSend[0], MinMsgSend[1])
         minutes = 2
         await message.channel.sendTyping();
 
         await new Promise(resolve => setTimeout(resolve, 9000));
         await channelJava.send(await advertising[randomNum(0, advertising.length - 1)])
 
-        timer(randomNum(TimeToSendMsg[1], TimeToSendMsg[2]))
+        timer(randomNum(TimeToSendMsg[0], TimeToSendMsg[1]))
     });
 
 }
