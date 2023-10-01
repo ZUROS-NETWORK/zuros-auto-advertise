@@ -1,7 +1,7 @@
 let minutes;
-let msgCount = MinMsgSend[0];
 const { advertising } = require('../../config/messages.json')
 const { ChannelsId, TimeToSendMsg, MinMsgSend } = require('../../config/config.json');
+let msgCount = MinMsgSend[0];
 async function inviter({ client }) {
     const channelJava = await client.channels.cache.get(ChannelsId[0])
     const channelBedrock = await client.channels.cache.get(ChannelsId[1])
