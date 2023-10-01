@@ -1,4 +1,4 @@
-// Módulo botmanager
+
 const { spawn } = require('child_process');
 const { NodeMode } = require('../config.json');
 const fs = require('fs');
@@ -21,7 +21,7 @@ async function RunBots({ logs, BotList }) {
         RunningBots[BotName] = childProcess;
 
         childProcess.stdout.on('data', (data) => {
-            const message = `${BotName}: ${data.toString()}`;
+            const message = `\n${BotName}: ${data.toString()}`;
             console.log(message);
             if (logs) {
                 logs.send(message);
@@ -32,7 +32,7 @@ async function RunBots({ logs, BotList }) {
             const errorMessage = `Error en ${BotName}: ${data.toString()}`;
             console.error(errorMessage);
             if (logs) {
-                logs.send(`:exclamation: ${errorMessage}`);
+                logs.send(`\n:exclamation: ${errorMessage}`);
             }
         });
 
@@ -40,7 +40,7 @@ async function RunBots({ logs, BotList }) {
             const errorMessage = `Error al ejecutar ${BotName}: ${error.message}`;
             console.error(errorMessage);
             if (logs) {
-                logs.send(`:exclamation: :warning: ${errorMessage}`);
+                logs.send(`\n:exclamation: :warning: ${errorMessage}`);
             }
         });
 
@@ -48,7 +48,7 @@ async function RunBots({ logs, BotList }) {
             const exitMessage = `${BotName} finalizado con código ${code} y señal ${signal}`;
             console.log(exitMessage);
             if (logs) {
-                logs.send(`:100::warning: ${exitMessage}`);
+                logs.send(`\n:100::warning: ${exitMessage}`);
             }
         });
     }
@@ -62,7 +62,7 @@ async function stopBot(BotName) {
         return `:white_check_mark:  Se detuvo el bot ${BotName}.`
     } else {
         console.error(`El bot ${BotName} no está en ejecución.`);
-        return `:exclamation: El bot ${BotName} no está en ejecución.`
+        return `\n:exclamation: El bot ${BotName} no está en ejecución.`
     }
 }
 module.exports = { RunBots, stopBot, RunningBots, BotList };
