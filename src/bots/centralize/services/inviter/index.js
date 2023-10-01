@@ -7,10 +7,10 @@ async function inviter({ client }) {
     const channelBedrock = await client.channels.cache.get(ChannelsId[1])
     client.on('message', async message => {
 
-        if (message.author.id == client.user.id) return;
-        console.log(message.content)
-        if (message.channel.id !== channelJava.id) return;
 
+
+        if (message.channel.id !== channelJava.id) return;
+        if (message.author.id == client.user.id) return;
         if (msgCount) {
             msgCount--
             console.log(`${msgCount}`)
